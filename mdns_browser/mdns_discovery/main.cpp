@@ -19,7 +19,11 @@ QVector<QMdnsEngine::Service> devices;
 QMdnsEngine::Resolver *resolver;
 QMdnsEngine::Browser *browser;
 
+/*
 
+return type: integer, which returns service's index
+parameter : device name
+*/
 int findService(const QByteArray &name)
 {
     for (auto i = devices.constBegin(); i != devices.constEnd(); ++i) {
@@ -31,7 +35,11 @@ int findService(const QByteArray &name)
     return -1;
 }
 
-
+/*
+    func: addService
+    return type: void
+    parameter: service, used in slot for QMdnsEngine::Browser::serviceAdded signal
+*/
 void addService(const QMdnsEngine::Service &service)
 {
     devices.append(service);
@@ -48,7 +56,11 @@ void addService(const QMdnsEngine::Service &service)
 
 }
 
-
+/*
+    func: removeService
+    return type: void
+    params: service, used in slot for QMdnsEngine::Browser::serviceRemoved signal
+*/
 void removeService(const QMdnsEngine::Service &service)
 {
     int i = findService(service.name());
@@ -77,6 +89,7 @@ int main(int argc, char *argv[])
 
     Publisher *pub = new Publisher(QHostAddress::LocalHost, 1883, nullptr);
 
+    // Connect signal and slots
     QObject::connect(browser, &QMdnsEngine::Browser::serviceAdded, qApp, addService);
     QObject::connect(browser, &QMdnsEngine::Browser::serviceRemoved, removeService);
 
