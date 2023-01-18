@@ -1,0 +1,35 @@
+QT -= gui
+QT += network
+
+CONFIG += c++17 console
+CONFIG -= app_bundle
+
+# You can make your code fail to compile if it uses deprecated APIs.
+# In order to do so, uncomment the following line.
+#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+
+SOURCES += \
+        main.cpp \
+        publisher.cpp
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+HEADERS += \
+    publisher.h
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../Downloads/paho.mqtt.c-1.3.9/build/src/release/ -lpaho-mqtt3c
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../Downloads/paho.mqtt.c-1.3.9/build/src/debug/ -lpaho-mqtt3c
+else:unix: LIBS += -L$$PWD/../../Downloads/paho.mqtt.c-1.3.9/build/src/ -lpaho-mqtt3c
+
+INCLUDEPATH += $$PWD/../../Downloads/paho.mqtt.c-1.3.9/build/src
+DEPENDPATH += $$PWD/../../Downloads/paho.mqtt.c-1.3.9/build/src
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../qmdnsengine/build/src/release/ -lqmdnsengine
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../qmdnsengine/build/src/debug/ -lqmdnsengine
+else:unix: LIBS += -L$$PWD/../../qmdnsengine/build/src/ -lqmdnsengine
+
+INCLUDEPATH += $$PWD/../../qmdnsengine/build/src
+DEPENDPATH += $$PWD/../../qmdnsengine/build/src
